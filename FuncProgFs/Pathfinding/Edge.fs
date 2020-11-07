@@ -1,7 +1,7 @@
 ﻿module Edge
 
 open PathAlgorithms
-open Vertice
+open Vertex
 
 type Edge(start_x, start_y, end_x, end_y, start_name, end_name) =
     member this.Distance = calculate_distance(start_x, start_y, end_x, end_y)
@@ -10,8 +10,5 @@ type Edge(start_x, start_y, end_x, end_y, start_name, end_name) =
     member this.RouteName = start_name + " to " + end_name
 
 
-let calculate_vertice_distances(vertices: List<Vertice>) =
-    let rec loop vertices =
-        match vertices with
-        |
-
+let calculate_edges(vertices) =
+    vertices

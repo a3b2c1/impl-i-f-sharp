@@ -4,25 +4,25 @@ using System.Text;
 
 namespace FuncProgArt.Pathfinding
 {
-    public class Vertice
+    public class Vertex
     {
         public Coordinates Coordinates { get; set; }
         public List<Edge> Edges { get; set; }
-        public string VerticeName { get; set; }
+        public string Name { get; set; }
         public bool Visited { get; set; }
 
-        public Vertice(Coordinates coordinates, int index)
+        public Vertex(Coordinates coordinates, int index)
         {
             Coordinates = coordinates;
-            AssignVerticeName(index);
+            AssignName(index);
             Edges = new List<Edge>();
             Visited = false;
         }
 
-        private void AssignVerticeName(int index)
+        private void AssignName(int index)
         {
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            VerticeName = alphabet[index].ToString();
+            Name = alphabet[index].ToString();
         }
     }
 }

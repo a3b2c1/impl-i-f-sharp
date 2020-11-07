@@ -5,8 +5,8 @@ namespace FuncProgArt.Pathfinding
 {
     public class PathfindingAlgorithms
     {
-        private Vertice playerVertice;
-        public List<Vertice> GeneratedVertices { get; set; }
+        private Vertex playerVertex;
+        public List<Vertex> GeneratedVertices { get; set; }
 
         public PathfindingAlgorithms()
         {
@@ -15,7 +15,7 @@ namespace FuncProgArt.Pathfinding
 
         private void GenerateVertices()
         {
-            GeneratedVertices = new List<Vertice>();
+            GeneratedVertices = new List<Vertex>();
             for (int i = 0; i < 5; i++)
             {
                 double random_x = GenerateRandomCoordinate();
@@ -28,46 +28,46 @@ namespace FuncProgArt.Pathfinding
                 }
 
                 Coordinates coordinates = new Coordinates(random_x, random_y);
-                Vertice vertice = new Vertice(coordinates, i);
+                Vertex vertex = new Vertex(coordinates, i);
 
-                GeneratedVertices.Add(vertice);
+                GeneratedVertices.Add(vertex);
             }
 
-            playerVertice = new Vertice(new Coordinates(GenerateRandomCoordinate(), GenerateRandomCoordinate()), 0);
-            playerVertice.VerticeName = "Player";
-            playerVertice.Visited = true;
-            GeneratedVertices.Add(playerVertice);
+            playerVertex = new Vertex(new Coordinates(GenerateRandomCoordinate(), GenerateRandomCoordinate()), 0);
+            playerVertex.Name = "Player";
+            playerVertex.Visited = true;
+            GeneratedVertices.Add(playerVertex);
 
             CalculateVerticesDistances(GeneratedVertices);
         }
 
-        private void CalculateVerticesDistances(List<Vertice> vertices)
+        private void CalculateVerticesDistances(List<Vertex> vertices)
         {
             for (int i = 0; i < vertices.Count; i++)
             {
-                Vertice startVertice = vertices[i];
+                Vertex startVertex = vertices[i];
                 for (int j = 0; j < vertices.Count; j++)
                 {
-                    Vertice endVertice = vertices[j];
+                    Vertex endVertex = vertices[j];
 
-                    if (i != j && endVertice.VerticeName != "Player")
+                    if (i != j && endVertex.Name != "Player")
                     {
-                        Edge edge = new Edge(startVertice, endVertice);
+                        Edge edge = new Edge(startVertex, endVertex);
 
-                        startVertice.Edges.Add(edge);
+                        startVertex.Edges.Add(edge);
                     }
                 }
             }
         }
 
-        private bool CheckForDuplicates(List<Vertice> vertices, double x, double y)
+        private bool CheckForDuplicates(List<Vertex> vertices, double x, double y)
         {
             bool foundDuplicate = false;
             int index = 0;
 
             while (!foundDuplicate && index < vertices.Count)
             {
-                Vertice vertice = vertices[index];
+                Vertex vertice = vertices[index];
 
                 if (vertice.Coordinates.X == x && vertice.Coordinates.Y == y)
                 {
@@ -89,9 +89,10 @@ namespace FuncProgArt.Pathfinding
 
         public void PrintVertices()
         {
-            Vertice playerVertice = GeneratedVertices.Find(v => v.VerticeName == "Player");
-            Console.WriteLine(string.Format("{0} : {1}, {2}\n", playerVertice.VerticeName, playerVertice.Coordinates.X, playerVertice.Coordinates.Y));
-            foreach (Vertice vertice in GeneratedVertices)
+
+            Vertex playerVertice = FindVertex("Player");
+            Console.WriteLine(string.Format("{0} : {1}, {2}\n", playerVertice.Name, playerVertice.Coordinates.X, playerVertice.Coordinates.Y));
+            foreach (Vertex vertice in GeneratedVertices)
             {
                 foreach (Edge edge in vertice.Edges)
                 {
@@ -101,17 +102,38 @@ namespace FuncProgArt.Pathfinding
             }
         }
 
+        private Vertex FindVertex(string name)
+        {
+            int index = 0;
+            Vertex foundVertex = null;
+
+            while (foundVertex == null && index < GeneratedVertices.Count)
+            {
+                Vertex indexedVertex = GeneratedVertices[index];
+
+                if (indexedVertex.Name == name)
+                {
+                    foundVertex = indexedVertex;
+                }
+
+                index++;
+            }
+
+            return foundVertex;
+
+        }
+
         public void DijkstrasAlgo()
         {
-            string routeName = string.Format("{0}", playerVertice.VerticeName);
+            string routeName = string.Format("{0}", playerVertex.Name);
             double shortestRoute = 0.0;
             Edge shortestEdgeDistance = null;
 
-            while (UnvisitedVerticeExists(playerVertice, ref shortestEdgeDistance))
+            while (UnvisitedVerticeExists(playerVertex, ref shortestEdgeDistance))
             {
-                for (int i = 0; i < playerVertice.Edges.Count; i++)
+                for (int i = 0; i < playerVertex.Edges.Count; i++)
                 {
-                    Edge edge = playerVertice.Edges[i];
+                    Edge edge = playerVertex.Edges[i];
 
                     if (!edge.End.Visited && edge.Distance < shortestEdgeDistance.Distance)
                     {
@@ -119,16 +141,16 @@ namespace FuncProgArt.Pathfinding
                     }
                 }
                 shortestRoute += shortestEdgeDistance.Distance;
-                routeName += string.Format(" -> {0}", shortestEdgeDistance.End.VerticeName);
+                routeName += string.Format(" -> {0}", shortestEdgeDistance.End.Name);
 
                 shortestEdgeDistance.End.Visited = true;
-                playerVertice = shortestEdgeDistance.End;
+                playerVertex = shortestEdgeDistance.End;
             }
             Console.WriteLine(routeName);
             Console.WriteLine(string.Format("shortest route length: {0}", shortestRoute));
         }
 
-        private bool UnvisitedVerticeExists(Vertice vertice, ref Edge edge)
+        private bool UnvisitedVerticeExists(Vertex vertice, ref Edge edge)
         {
             bool unvisitedVerticeExists = false;
             int index = 0;

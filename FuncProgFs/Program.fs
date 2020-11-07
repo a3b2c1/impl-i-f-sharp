@@ -1,7 +1,7 @@
 ﻿// Learn more about F# at http://fsharp.org
 
 open System
-open Vertice
+open Vertex
 
 [<EntryPoint>]
 let main argv =
