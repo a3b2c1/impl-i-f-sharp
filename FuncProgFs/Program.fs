@@ -2,11 +2,15 @@
 
 open System
 open Vertex
+open Edge
+open PathfindingDijkstra
 
 [<EntryPoint>]
 let main argv =
-    let list = generate_vertices()
+    //let list = generate_vertices()
+    //let edges = calculate_edges(list)
 
-    printf "dista"
+    let n = DijkstrasAlgo()
+    printfn "Shortest route distance: %f" n
 
     0 // return an integer exit code

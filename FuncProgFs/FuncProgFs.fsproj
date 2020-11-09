@@ -9,6 +9,7 @@
     <Compile Include="Pathfinding\PathAlgorithms.fs" />
     <Compile Include="Pathfinding\Vertex.fs" />
     <Compile Include="Pathfinding\Edge.fs" />
+    <Compile Include="Pathfinding\PathfindingDijkstra.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
